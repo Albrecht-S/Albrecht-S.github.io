@@ -1,0 +1,43 @@
+sudo: required
+dist: trusty
+cache: ccache
+
+language:
+  - c++
+
+os:
+  - linux
+
+compiler:
+  - gcc
+
+branches:
+  only:
+  - master
+
+before_script:
+  - |
+    if [ $TRAVIS_OS_NAME == linux ]; then
+       sudo apt-get update -q
+       sudo apt-get install -y libxinerama-dev libxcursor-dev libasound2-dev libglew-dev
+       sudo apt-get install -y doxygen
+    fi
+
+script:
+  - |
+    rm -rf build-fltk
+    mkdir build-fltk
+    git clone https://github.com/fltk/fltk.git build-fltk
+    cd build-fltk
+    make clean
+    cd documentation
+    make; make html
+    cd ../..
+    rm -rf docs/fltk-1.4
+    mv build-fltk/documentation/html docs/fltk-1.4/
+    rm -rf build-fltk
+    echo ""
+    echo "Build done."
+    echo ""
+    date
+    ls -lR docs/fltk-1.4
