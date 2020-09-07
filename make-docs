@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+REPO="/git/www/github-pages"
+TEMP="/tmp/build-fltk-$$"
+rm -rf $TEMP
+mkdir $TEMP
+git clone https://github.com/fltk/fltk.git $TEMP
+cd $TEMP
+make clean
+cd documentation
+make
+make html
+cd $REPO
+git rm docs/fltk-1.4/*
+rm -rf $REPO/docs/fltk-1.4/
+mv $TEMP/documentation/html $REPO/docs/fltk-1.4/
+git add docs/fltk-1.4/
+rm -rf $TEMP
+echo ""
+echo "Build done."
+echo ""
+date
+ls -lR docs/fltk-1.4
