@@ -1,23 +1,50 @@
 #!/bin/bash
 #
-REPO="/git/www/github-pages"
-TEMP="/tmp/build-fltk-$$"
-rm -rf $TEMP
-mkdir $TEMP
-git clone https://github.com/fltk/fltk.git $TEMP
-cd $TEMP
+ REPO="/git/www/github-pages"
+BUILD="$REPO/build"
+ DOCS="docs/fltk-1.4"
+#
+echo ""
+echo "Updating fltk repository $BUILD"
+echo ""
+#
+cd $BUILD
+git pull
+#
+echo ""
+echo "Building docs ..."
+echo ""
+#
 make clean
 cd documentation
+pwd
 make
 make html
+make pdf
+#
+echo ""
+echo "Building docs ..."
+echo ""
+#
 cd $REPO
-git rm docs/fltk-1.4/*
-rm -rf $REPO/docs/fltk-1.4/
-mv $TEMP/documentation/html $REPO/docs/fltk-1.4/
-git add docs/fltk-1.4/
-rm -rf $TEMP
+git rm $DOCS/*
+rm -rf $DOCS/
+mv $BUILD/documentation/html $DOCS
+mv $BUILD/documentation/fltk.pdf $DOCS/
+# rm -rf $BUILD
+# ls -lR $DOCS
 echo ""
 echo "Build done."
 echo ""
 date
-ls -lR docs/fltk-1.4
+echo ""
+echo "Committing and pushing ..."
+echo ""
+git add $DOCS/
+git commit -m "Update documentation"
+#
+# git push
+#
+echo ""
+echo "Done."
+echo ""
