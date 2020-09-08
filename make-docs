@@ -23,7 +23,7 @@ make html
 make pdf
 #
 echo ""
-echo "Building docs ..."
+echo "Moving docs to their destination ..."
 echo ""
 #
 cd $REPO
@@ -31,8 +31,7 @@ git rm $DOCS/*
 rm -rf $DOCS/
 mv $BUILD/documentation/html $DOCS
 mv $BUILD/documentation/fltk.pdf $DOCS/
-# rm -rf $BUILD
-# ls -lR $DOCS
+#
 echo ""
 echo "Build done."
 echo ""
